@@ -147,6 +147,11 @@ the parameter values.</p>
 <span>  kc_jmax            <span class="op">=</span> <span class="fl">0.41</span>,</span>
 <span>  error_gpp          <span class="op">=</span> <span class="fl">0.9</span>         <span class="co"># value from previous simulations</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: There was 1 warning in `dplyr::mutate()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `data = purrr::pmap(., run_pmodel_f_bysite, params_modl = par,</span></span>
+<span><span class="co">#&gt;   makecheck = makecheck)`.</span></span>
+<span><span class="co">#&gt; Caused by warning:</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Unknown or uninitialised column: `tchome`.</span></span>
 <span><span class="co">#&gt; [1] -2758.149</span></span></code></pre></div>
 <p>Some parameters are constrained by their physical interpretation
 (e.g. <code>kphio &gt; 0</code>) and it’s also necessary to provide a
@@ -430,6 +435,11 @@ next to other statistics, using the <code>summary</code> function from
 the <code>BayesianTools</code> library.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">par_calib</span><span class="op">$</span><span class="va">mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: There was 1 warning in `dplyr::mutate()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `data = purrr::pmap(., run_pmodel_f_bysite, params_modl = par,</span></span>
+<span><span class="co">#&gt;   makecheck = makecheck)`.</span></span>
+<span><span class="co">#&gt; Caused by warning:</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Unknown or uninitialised column: `tchome`.</span></span>
 <span><span class="co">#&gt; # # # # # # # # # # # # # # # # # # # # # # # # # </span></span>
 <span><span class="co">#&gt; ## MCMC chain summary ## </span></span>
 <span><span class="co">#&gt; # # # # # # # # # # # # # # # # # # # # # # # # # </span></span>

@@ -196,9 +196,21 @@ exactly replicated.</p>
 <span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">rsofun</span><span class="fu">::</span><span class="fu">runread_pmodel_f</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  drivers <span class="op">=</span> <span class="fu">rsofun</span><span class="fu">::</span><span class="va"><a href="p_model_drivers.html">p_model_drivers</a></span>,</span></span>
 <span class="r-in"><span>  par <span class="op">=</span> <span class="va">params_modl</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `data = purrr::pmap(., run_pmodel_f_bysite, params_modl = par,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   makecheck = makecheck)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Unknown or uninitialised column: `tchome`.</span>
 <span class="r-in"><span><span class="va">output_vcmax25</span> <span class="op">&lt;-</span> <span class="fu">rsofun</span><span class="fu">::</span><span class="fu">runread_pmodel_f</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  drivers <span class="op">=</span> <span class="fu">rsofun</span><span class="fu">::</span><span class="va"><a href="p_model_drivers_vcmax25.html">p_model_drivers_vcmax25</a></span>,</span></span>
 <span class="r-in"><span>  par <span class="op">=</span> <span class="va">params_modl</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 4 warnings in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `data = purrr::pmap(., run_pmodel_f_bysite, params_modl = par,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   makecheck = makecheck)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Unknown or uninitialised column: `tchome`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</span>
 </code></pre></div>
     </div>
   </div>
