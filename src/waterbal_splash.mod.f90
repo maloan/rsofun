@@ -12,6 +12,7 @@ module md_waterbal
   use md_interface_pmodel, only: myinterface
   use md_sofunutils, only: radians, dgsin, dgcos, degrees
   use md_gpp_pmodel, only:  params_gpp
+  use md_photosynth_phydro, only: calc_density_air, dbl8
 
   implicit none
 
@@ -333,7 +334,8 @@ contains
     real :: sat_slope                       ! slope of saturation vapour pressure vs. temperature curve, Pa K-1
     real :: lv                              ! enthalpy of vaporization, J/kg
     real :: cp                              ! heat capacity of moist air, J kg-1 K-1
-    real :: rho_water                       ! density of water (g m-3)
+    real :: rho_water                       ! density of water (kg m-3)
+    real :: rho_air                         ! density of air (kg m-3)
     real :: f_soil_aet                      ! Fractional reduction of soil AET due to moisture limitation
     real :: p_over_pet_memory               ! P/PET
     real, save :: p_memory = 0.0            ! precipitation, damped variability
@@ -365,8 +367,8 @@ contains
     ! Latent heat of vaporization, J/kg
     lv = calc_enthalpy_vap( climate%dtemp )
     
-    ! Density of water, kg/m^3
-    rho_water = density_h2o( climate%dtemp, calc_patm( grid%elv ) )
+    ! Liquid-water density (use the freezing-point value below 0 degrees C).
+    rho_water = density_h2o( max(climate%dtemp, 0.0), calc_patm( grid%elv ) )
 
     ! Psychrometric constant, Pa/K
     gamma = psychro( climate%dtemp, calc_patm( grid%elv ) )
@@ -485,6 +487,8 @@ contains
         !---------------------------------------------------------
         ! Aerodynamic conductance (m s-1)
         ga = calc_g_aero(myinterface%canopy_height, climate%dwind, myinterface%reference_height)
+        rho_air = real(calc_density_air(real(climate%dtemp, kind=dbl8), &
+          real(calc_patm(grid%elv), kind=dbl8), real(climate%dvpd, kind=dbl8), .true.))
 
         ! variable substitute as used in Zhang et al. 2017 JGR    
         epsilon = sat_slope / gamma
@@ -506,12 +510,12 @@ contains
 
         ! FRANCESCO: canopy height -1 = no vegetation
 
-        if (myinterface%canopy_height < 0) then
+        if (myinterface%canopy_height < 0 .or. gw <= 0.0) then
         
           tile_fluxes%canopy%daet_e_canop = 0
         else
-          tile_fluxes%canopy%daet_e_canop = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_water * cp / gamma) &
-          * ga * climate%dvpd) / (epsilon + 1.0 + ga / gw) 
+          tile_fluxes%canopy%daet_e_canop = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_air * cp / gamma) &
+          * ga * climate%dvpd * myinterface%params_siml%secs_per_tstep) / (epsilon + 1.0 + ga / gw) 
         end if
         
         ! latent energy flux from canopy (W m-2) 
@@ -520,8 +524,8 @@ contains
         !  * ga * climate%dvpd) / (epsilon + 1.0 + ga / gw) 
 
         ! canopy conductance assuming gw = infinite
-        tile_fluxes%canopy%dpet_e   = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_water * cp / gamma) &
-          * ga * climate%dvpd) / (epsilon + 1.0) 
+        tile_fluxes%canopy%dpet_e   = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_air * cp / gamma) &
+          * ga * climate%dvpd * myinterface%params_siml%secs_per_tstep) / (epsilon + 1.0) 
         tile_fluxes%canopy%dpet = dpet_soil + tile_fluxes%canopy%dpet_e * energy_to_mm 
 
         ! print*,'-----------------------'

@@ -318,7 +318,7 @@ contains
     actnv  = vcmax25 * n_v
 
     ! Derive Jmax using again A_J = A_C
-    if (ppfd < eps) then
+    if (ppfd < eps .or. kphio <= 0.0) then
       fact_jmaxlim = 1.0
       jmax = 0.0
       jmax25 = 0.0
