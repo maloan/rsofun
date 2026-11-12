@@ -277,6 +277,7 @@ contains
     else
       tile_fluxes(:)%canopy%drn = (secs_per_day/pi) * (hn*(pi/180.0)*(rw*ru - tile_fluxes(:)%canopy%rnl) + rw*rv*dgsin(hn))
     end if
+    tile_fluxes(:)%canopy%irn = tile_fluxes(:)%canopy%drn / myinterface%params_siml%secs_per_tstep
     ! tile_fluxes(:)%canopy%drn = (secs_per_day/pi) * (hn*(pi/180.0)*(rw*ru - tile_fluxes(:)%canopy%rnl) + rw*rv*dgsin(hn))
 
     !---------------------------------------------------------
@@ -514,18 +515,18 @@ contains
         
           tile_fluxes%canopy%daet_e_canop = 0
         else
-          tile_fluxes%canopy%daet_e_canop = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_air * cp / gamma) &
-          * ga * climate%dvpd * myinterface%params_siml%secs_per_tstep) / (epsilon + 1.0 + ga / gw) 
+          tile_fluxes%canopy%daet_e_canop = (epsilon * fapar * tile_fluxes%canopy%irn + (rho_air * cp / gamma) &
+          * ga * climate%dvpd) / (epsilon + 1.0 + ga / gw) * myinterface%params_siml%secs_per_tstep 
         end if
         
-        ! latent energy flux from canopy (W m-2) 
+        ! Canopy latent energy over the timestep (J m-2) 
         ! See also calc_transpiration_pm() in photosynth_phydro.mod.f90
         ! tile_fluxes%canopy%daet_e_canop = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_water * cp / gamma) &
         !  * ga * climate%dvpd) / (epsilon + 1.0 + ga / gw) 
 
         ! canopy conductance assuming gw = infinite
-        tile_fluxes%canopy%dpet_e   = (epsilon * fapar * tile_fluxes%canopy%drn + (rho_air * cp / gamma) &
-          * ga * climate%dvpd * myinterface%params_siml%secs_per_tstep) / (epsilon + 1.0) 
+        tile_fluxes%canopy%dpet_e   = (epsilon * fapar * tile_fluxes%canopy%irn + (rho_air * cp / gamma) &
+          * ga * climate%dvpd) / (epsilon + 1.0) * myinterface%params_siml%secs_per_tstep
         tile_fluxes%canopy%dpet = dpet_soil + tile_fluxes%canopy%dpet_e * energy_to_mm 
 
         ! print*,'-----------------------'
