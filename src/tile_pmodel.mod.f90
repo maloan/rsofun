@@ -90,6 +90,7 @@ module md_tile_pmodel
     real :: dwbal           ! daily water balance as precipitation and snow melt minus runoff and evapotranspiration (mm d-1)
     real :: econ            ! water-to-energy conversion factor (m^3/J)
     real :: drn             ! daily total net radiation (J/m2/d)
+    real :: irn             ! timestep mean net radiation (W m-2)
     real :: drnn            ! nighttime total net radiation (J m-1 d-1)
     real :: rnl             ! net longwave radiation (W m-2)
     real :: dcn             ! daily total condensation (mm d-1)
@@ -441,6 +442,7 @@ contains
     tile_fluxes(:)%canopy%dwbal = 0.0           
     tile_fluxes(:)%canopy%econ = 0.0            
     tile_fluxes(:)%canopy%drn = 0.0              
+    tile_fluxes(:)%canopy%irn = 0.0
     tile_fluxes(:)%canopy%drnn = 0.0             
     tile_fluxes(:)%canopy%rnl = 0.0             
     tile_fluxes(:)%canopy%dcn = 0.0              
